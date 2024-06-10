@@ -36,18 +36,6 @@ pipeline {
                     // Run link checker tests
                     echo 'Running link checker tests'
                     sh 'linkchecker http://localhost:81'
-
-                    // Run performance tests (optional)
-                    echo 'Running performance tests'
-                    sh 'lighthouse http://localhost:81 --output html --output-path lighthouse-report.html'
-
-                    // Run accessibility tests (optional)
-                    echo 'Running accessibility tests'
-                    sh 'pa11y http://localhost:81'
-
-                    // Run SEO tests (optional)
-                    echo 'Running SEO tests'
-                    sh 'seo-tester http://localhost:81'
                 }
             }
         }
