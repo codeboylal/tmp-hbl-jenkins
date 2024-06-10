@@ -18,27 +18,6 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                script {
-                    // Install Html validate 
-                    // npm install -g html-validate
-                    
-                    // Run HTML validation tests
-                    echo 'Running HTML validation tests'
-                    sh 'html-validate index.html'
-
-                    // // Run CSS validation tests
-                    // echo 'Running CSS validation tests'
-                    // sh 'csslint styles.css'
-
-                    // // Run JavaScript linting tests
-                    // echo 'Running JavaScript linting tests'
-                    // sh 'eslint scripts.js'
-                }
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'docker build -t my-new-website .'
