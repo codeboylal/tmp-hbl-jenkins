@@ -5,7 +5,7 @@ pipeline {
         stage('Repo Scan') {
             
             steps {
-                echo 'Repository scan with Trivy!'
+                echo 'Repository scan with Trivy'
                 sh 'trivy repo  --branch dev https://github.com/codeboylal/hbl-jenkins.git'
             }
         }
