@@ -6,7 +6,7 @@ pipeline {
             
             steps {
                 echo 'Repository scan with Trivy'
-                sh 'trivy repo https://github.com/codeboylal/hbl-jenkins.git'
+                sh 'trivy repo  --branch dev https://github.com/codeboylal/hbl-jenkins.git'
             }
         }
 
