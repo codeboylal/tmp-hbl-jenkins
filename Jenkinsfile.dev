@@ -6,7 +6,7 @@ pipeline {
             
             steps {
                 echo 'Repository scan with Trivy'
-                sh 'trivy repo  --branch dev https://github.com/codeboylal/hbl-jenkins.git'
+                sh 'trivy repo https://github.com/codeboylal/hbl-jenkins.git'
             }
         }
 
@@ -20,14 +20,14 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'docker build -t my-new-website .'
+                sh 'docker build -t my-new-website-dev .'
             }
         }
 
         stage('Image Scan') {
             steps {
                 echo 'Docker Image scanning with Trivy'
-                sh 'trivy image my-new-website'
+                sh 'trivy image my-new-website-dev'
             }
         }
 
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 echo 'Deploy on container'
                 sh 'docker stop $(docker ps -q)'
-                sh 'docker run -d -p 81:80 my-new-website'
+                sh 'docker run -d -p 81:80 my-new-website-dev'
             }
         }
     }
