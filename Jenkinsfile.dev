@@ -34,7 +34,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy on container'
-                sh 'docker stop $(docker ps --format '{{.Names}})'
+                sh "docker stop $(docker ps --format '{{.Names}})"
                 sh 'docker run --name hbl-container -d -p 81:80 my-new-website-dev'
 
             }
