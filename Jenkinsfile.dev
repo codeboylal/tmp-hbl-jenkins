@@ -33,7 +33,7 @@ pipeline {
                     echo 'Running JavaScript linting tests'
                     sh 'eslint scripts.js'
 
-                    // Run link checker tests
+                    // Run link checker tests!
                     echo 'Running link checker tests'
                     sh 'linkchecker http://localhost:81'
                 }
