@@ -21,6 +21,10 @@ pipeline {
         stage('Test') {
             steps {
                 script {
+                    // Install Html validate 
+                    // npm install -g html-validate
+                    sh 'npm install -g html-validate'
+
                     // Run HTML validation tests
                     echo 'Running HTML validation tests'
                     sh 'html-validate index.html'
