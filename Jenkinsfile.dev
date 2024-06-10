@@ -34,9 +34,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy on container'
-                // sh 'docker stop $(docker ps -q)'
-                sh 'docker run -d -p 81:80 my-new-website-dev'
+                // sh 'docker stop $(docker ps -)'
+                sh 'docker run --name hbl-container -d -p 81:80 my-new-website-dev'
+                
             }
         }
+
+
+
+
     }
 }
