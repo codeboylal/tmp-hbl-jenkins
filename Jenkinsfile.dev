@@ -34,7 +34,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy on container'
-                sh 'docker stop $(docker ps -q)'
+                // sh 'docker stop $(docker ps -q)'
                 sh 'docker run -d -p 81:80 my-new-website-dev'
             }
         }
