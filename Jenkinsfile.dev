@@ -2,19 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('Repo Scan') {
+        // stage('Repo Scan') {
             
-            steps {
-                echo 'Repository scan with Trivy'
-                sh 'trivy repo https://github.com/codeboylal/hbl-jenkins.git'
-            }
-        }
+        //     steps {
+        //         echo 'Repository scan with Trivy'
+        //         sh 'trivy repo https://github.com/codeboylal/hbl-jenkins.git'
+        //     }
+        // }
 
         stage('Code Fetch') {
             
             steps {
                 echo 'Code fetch form GitHub'
-                git url:'https://github.com/codeboylal/hbl-jenkins.git', branch: 'dev'
+                git url:'https://github.com/codeboylal/tmp-hbl-jenkins.git', branch: 'dev'
             }
         }
 
@@ -24,12 +24,12 @@ pipeline {
             }
         }
 
-        stage('Image Scan') {
-            steps {
-                echo 'Docker Image scanning with Trivy'
-                sh 'trivy image my-new-website-dev'
-            }
-        }
+        // stage('Image Scan') {
+        //     steps {
+        //         echo 'Docker Image scanning with Trivy'
+        //         sh 'trivy image my-new-website-dev'
+        //     }
+        // }
 
         stage('Deploy') {
             steps {
