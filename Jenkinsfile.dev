@@ -18,6 +18,40 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                script {
+                    // Run HTML validation tests
+                    echo 'Running HTML validation tests'
+                    sh 'html-validate index.html'
+
+                    // Run CSS validation tests
+                    echo 'Running CSS validation tests'
+                    sh 'csslint styles.css'
+
+                    // Run JavaScript linting tests
+                    echo 'Running JavaScript linting tests'
+                    sh 'eslint scripts.js'
+
+                    // Run link checker tests
+                    echo 'Running link checker tests'
+                    sh 'linkchecker http://localhost:81'
+
+                    // Run performance tests (optional)
+                    echo 'Running performance tests'
+                    sh 'lighthouse http://localhost:81 --output html --output-path lighthouse-report.html'
+
+                    // Run accessibility tests (optional)
+                    echo 'Running accessibility tests'
+                    sh 'pa11y http://localhost:81'
+
+                    // Run SEO tests (optional)
+                    echo 'Running SEO tests'
+                    sh 'seo-tester http://localhost:81'
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'docker build -t my-new-website .'
