@@ -1,30 +1,16 @@
 pipeline {
     agent any
 
+    environment{
+        DOCKER_IMAGE = 'my-new-website-prod'
+        CONTAINER_NAME = 'container-my-new-website-prod'
+    }
+
     stages {
         stage('Code Fetch') {
             steps {
                 echo 'Code fetch from GitHub'
                 git url: 'https://github.com/codeboylal/tmp-hbl-jenkins.git', branch: 'main'
-            }
-        }
-
-        stage('Clean Up') {
-            steps {
-                script {
-                    // Stop and remove the existing container
-                    def containerId = sh(script: "docker ps -q --filter 'name=my-new-website-prod'", returnStdout: true).trim()
-                    if (containerId) {
-                        sh "docker stop ${containerId}"
-                        sh "docker rm ${containerId}"
-                    }
-
-                    // Remove the existing image
-                    def imageId = sh(script: "docker images -q my-new-website-prod", returnStdout: true).trim()
-                    if (imageId) {
-                        sh "docker rmi -f ${imageId}"
-                    }
-                }
             }
         }
 
@@ -34,12 +20,19 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                echo 'Deploy on container'
+         // Deploy to Docker Container
 
-                // Run the new container
-                sh 'docker run -d --name my-new-website-prod -p 80:80 my-new-website-prod'
+        stage('Deploy - Docker') {
+            steps {
+               
+                echo 'Stopping previous container'
+                sh "docker stop ${CONTAINER_NAME} || true"
+                
+                echo 'Removing previous container'
+                sh "docker rm ${CONTAINER_NAME} || true"
+                
+                echo 'Starting new container'
+                sh "docker run -d --name ${CONTAINER_NAME} -p 80:80 ${DOCKER_IMAGE}"
             }
         }
     }
