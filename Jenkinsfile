@@ -22,7 +22,7 @@ pipeline {
 
                 echo 'Removing previous container'
                 sh "docker rm ${CONTAINER_NAME} || true"
-                
+
                 sh 'docker build -t my-new-website-prod .'
             }
         }
@@ -33,6 +33,7 @@ pipeline {
             steps {                
                 echo 'Starting new container'
                 sh "docker run -d --name ${CONTAINER_NAME} -p 80:80 ${DOCKER_IMAGE}"
+                sh "docker system prune -a"
             }
         }
     }
