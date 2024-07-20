@@ -16,6 +16,13 @@ pipeline {
 
         stage('Build') {
             steps {
+
+                echo 'Stopping previous container'
+                sh "docker stop ${CONTAINER_NAME} || true"
+
+                echo 'Removing previous container'
+                sh "docker rm ${CONTAINER_NAME} || true"
+                
                 sh 'docker build -t my-new-website-prod .'
             }
         }
@@ -23,14 +30,7 @@ pipeline {
          // Deploy to Docker Container
 
         stage('Deploy - Docker') {
-            steps {
-               
-                echo 'Stopping previous container'
-                sh "docker stop ${CONTAINER_NAME} || true"
-                
-                echo 'Removing previous container'
-                sh "docker rm ${CONTAINER_NAME} || true"
-                
+            steps {                
                 echo 'Starting new container'
                 sh "docker run -d --name ${CONTAINER_NAME} -p 80:80 ${DOCKER_IMAGE}"
             }
