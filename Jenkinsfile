@@ -18,7 +18,19 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy on container'
+
+                // Stop and remove existing container if it exists
+                script {
+                    def containerId = sh(script: "docker ps -q --filter 'name=my-new-website-prod'", returnStdout: true).trim()
+                    if (containerId) {
+                        sh "docker stop ${containerId}"
+                        sh "docker rm ${containerId}"
+                    }
+                }
+                
+                // Deploy fresh application to docker container
                 sh 'docker run -d -p 80:80 my-new-website-prod'
+
             }
         }
     }
