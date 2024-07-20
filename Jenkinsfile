@@ -9,6 +9,25 @@ pipeline {
             }
         }
 
+        stage('Clean Up') {
+            steps {
+                script {
+                    // Stop and remove the existing container
+                    def containerId = sh(script: "docker ps -q --filter 'name=my-new-website-prod'", returnStdout: true).trim()
+                    if (containerId) {
+                        sh "docker stop ${containerId}"
+                        sh "docker rm ${containerId}"
+                    }
+
+                    // Remove the existing image
+                    def imageId = sh(script: "docker images -q my-new-website-prod", returnStdout: true).trim()
+                    if (imageId) {
+                        sh "docker rmi -f ${imageId}"
+                    }
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 sh 'docker build -t my-new-website-prod .'
@@ -18,15 +37,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy on container'
-
-                // Stop and remove any existing container using the same image name
-                script {
-                    def containerId = sh(script: "docker ps -aq --filter 'ancestor=my-new-website-prod'", returnStdout: true).trim()
-                    if (containerId) {
-                        sh "docker stop ${containerId}"
-                        sh "docker rm ${containerId}"
-                    }
-                }
 
                 // Run the new container
                 sh 'docker run -d --name my-new-website-prod -p 80:80 my-new-website-prod'
