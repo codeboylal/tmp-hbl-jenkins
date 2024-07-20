@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Code Fetch') {
             steps {
-                echo 'Code fetch form GitHub'
-                git url:'https://github.com/codeboylal/tmp-hbl-jenkins.git', branch: 'main'
+                echo 'Code fetch from GitHub'
+                git url: 'https://github.com/codeboylal/tmp-hbl-jenkins.git', branch: 'main'
             }
         }
 
@@ -19,18 +19,17 @@ pipeline {
             steps {
                 echo 'Deploy on container'
 
-                // Stop and remove existing container if it exists
+                // Stop and remove any existing container using the same image name
                 script {
-                    def containerId = sh(script: "docker ps -q --filter 'name=my-new-website-prod'", returnStdout: true).trim()
+                    def containerId = sh(script: "docker ps -aq --filter 'ancestor=my-new-website-prod'", returnStdout: true).trim()
                     if (containerId) {
                         sh "docker stop ${containerId}"
                         sh "docker rm ${containerId}"
                     }
                 }
-                
-                // Deploy fresh application to docker container
-                sh 'docker run -d -p 80:80 my-new-website-prod'
 
+                // Run the new container
+                sh 'docker run -d --name my-new-website-prod -p 80:80 my-new-website-prod'
             }
         }
     }
