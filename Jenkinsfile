@@ -33,7 +33,7 @@ pipeline {
             steps {                
                 echo 'Starting new container'
                 sh "docker run -d --name ${CONTAINER_NAME} -p 80:80 ${DOCKER_IMAGE}"
-                sh "docker system prune -a -y"
+                sh "docker system prune -a -f" 
             }
         }
     }
